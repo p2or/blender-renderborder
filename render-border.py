@@ -17,12 +17,12 @@
 # ##### END GPL LICENSE BLOCK #####
 
 bl_info = {
-    "name": "Set Render Border",
-    "description": "Set Render Border",
+    "name": "Render Border",
+    "description": "Render Border",
     "author": "Christian Brinkmann, David Wiesner",
     "version": (0, 0, 2),
     "blender": (2, 75, 0),
-    "tracker_url": "",
+    "tracker_url": "https://github.com/p2or/blender-renderborder",
     "location": "Camera > Properties > Data > Render Border",
     "category": "Render"
 }
