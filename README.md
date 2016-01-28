@@ -1,6 +1,6 @@
 ### Render Border
 
-Blender Add-on for pixel-precise [Render Border](https://blender.org/manual/render/camera/introduction.html#render-border).
+Blender Add-on for pixel-precise [Render Borders](https://blender.org/manual/render/camera/introduction.html#render-border).
 
 ![intro](https://fat.gfycat.com/FearlessGiftedGnu.gif)
 
