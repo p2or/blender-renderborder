@@ -15,3 +15,11 @@ The Panel is accessible via *Camera > Properties > Data > Render Border*.
  - **T** - Pixel distance between the top edge of the camera border and the top edge of the render border
  - **Center X** - Horizontal center of the render border
  - **Center Y** - Vertical center of the render border
+
+#### Installation
+
+ 1. Download the [latest release](https://github.com/p2or/blender-renderborder/releases)
+ 2. In Blender open up *User Preferences > Addons*
+ 3. Click install from File and select `render-border.py` and activate the Addon
+
+ ![](http://i.stack.imgur.com/ekX5p.png)
