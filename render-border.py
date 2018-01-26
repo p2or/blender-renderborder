@@ -19,7 +19,7 @@
 bl_info = {
     "name": "Render Border",
     "description": "Render Border",
-    "author": "Christian Brinkmann, David Wiesner",
+    "author": "Christian Brinkmann, David Boho",
     "version": (0, 0, 2),
     "blender": (2, 75, 0),
     "tracker_url": "https://github.com/p2or/blender-renderborder",
@@ -28,6 +28,8 @@ bl_info = {
 }
 
 import bpy
+from bpy.app.handlers import persistent
+
 
 def round_pixels(pixel_float):
     return round(pixel_float, 2)
@@ -50,9 +52,11 @@ def calc_centerX(res_x, min_x, width):
 def calc_centerY(res_y, min_y, height):
     return res_y * min_y + height / 2
 
+
 # ------------------------------------------------------------------------
-# properties
+# Properties
 # ------------------------------------------------------------------------
+
 class RenderBorder(bpy.types.PropertyGroup):
     
     # static member
@@ -131,7 +135,6 @@ class RenderBorder(bpy.types.PropertyGroup):
         
     def get_useBorder(self):
         bpy.ops.renderborder.init_renderborder()
-        bpy.ops.renderborder.update_renderborder()
         return self._rd.use_border
 
     center_x = bpy.props.IntProperty(
@@ -182,42 +185,29 @@ class RenderBorder(bpy.types.PropertyGroup):
         name = "Use render border", description = "Use render border", 
         get=get_useBorder, set=set_useBorder)
 
+
 # ------------------------------------------------------------------------
-# operators
+# Operators
 # ------------------------------------------------------------------------
 # http://wiki.blender.org/index.php/Extensions:2.6/Py/API_Changes
 class InitRenderBorder(bpy.types.Operator):
     bl_idname = "renderborder.init_renderborder"
     bl_label = "Init Render Border"
     bl_options = {'INTERNAL'}
- 
-    @classmethod
-    def poll(cls, context):
-        return context.active_object is not None
- 
+  
     def execute(self, context):
         scn = context.scene
-        #if RenderBorder._rd == None:
         RenderBorder._rd = scn.render
         RenderBorder._resX = scn.render.resolution_x
         RenderBorder._resY = scn.render.resolution_y
-        return {'FINISHED'}
-
-class UpdateRenderBorder(bpy.types.Operator):
-    bl_idname = "renderborder.update_renderborder"
-    bl_label = "Update Render Border"
-    bl_description = "Adapt size of viewport values"
-    bl_options = {'INTERNAL'}
-    
-    def execute(self, context):
-        scn = context.scene
+        
         rbx = scn.renderborder
         rbx.min_x = round_pixels(calc_pixels(scn.render.border_min_x, scn.render.resolution_x))
         rbx.min_y = round_pixels(calc_pixels(scn.render.border_min_y, scn.render.resolution_y))
         rbx.max_x = round_pixels(calc_pixels(scn.render.border_max_x, scn.render.resolution_x))
         rbx.max_y = round_pixels(calc_pixels(scn.render.border_max_y, scn.render.resolution_y))
         return {'FINISHED'}
-      
+
 class ResetRenderBorder(bpy.types.Operator):
     bl_idname = "renderborder.reset_renderborder"
     bl_label = "Reset Render Border"
@@ -233,9 +223,10 @@ class ResetRenderBorder(bpy.types.Operator):
         rbx.max_y = scn.render.resolution_y
         self.report({'INFO'}, "Render Border adapted")
         return {'FINISHED'}
-    
+
+
 # ------------------------------------------------------------------------
-# panel
+# Panel
 # ------------------------------------------------------------------------
 
 class RenderBorderPanel(bpy.types.Panel):
@@ -256,11 +247,12 @@ class RenderBorderPanel(bpy.types.Panel):
     
     def draw(self, context):
         scn = context.scene
+        #context.area.tag_redraw()
         rbx = scn.renderborder
         layout = self.layout
       
         row = layout.row()
-        col = layout.column(align=True)
+        col = row.column(align=True)
         rowsub = col.row(align=True)
         rowsub.prop(rbx, "min_x", text="X")
         rowsub.prop(rbx, "max_x", text="R")
@@ -276,20 +268,27 @@ class RenderBorderPanel(bpy.types.Panel):
         rowsub = row.split(align=True, percentage=0.3)
         rowsub.prop(scn.render, "use_crop_to_border", text="Crop Image")
         rowsub.alignment = 'RIGHT'
-        rowsub.label('Width: {}px Height: {}px'.format(str(rbx.width), str(rbx.height)))
+        rowsub.label('Width: {}px Height: {}px'.format(rbx.width, rbx.height))
 
         
 # ------------------------------------------------------------------------
-# registration
+# Registration
 # ------------------------------------------------------------------------
+
+@persistent
+def init_renderborder_member(dummy):
+    bpy.ops.renderborder.init_renderborder()
 
 def register():
     bpy.utils.register_module(__name__)
     bpy.types.Scene.renderborder = bpy.props.PointerProperty(type=RenderBorder)
+    bpy.app.handlers.load_post.append(init_renderborder_member)
 
 def unregister():
     bpy.utils.unregister_module(__name__)
+    bpy.app.handlers.load_post.remove(init_renderborder_member)
     del bpy.types.Scene.renderborder
 
 if __name__ == "__main__":
     register()
+    # bpy.ops.renderborder.init_renderborder()
