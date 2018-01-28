@@ -20,7 +20,7 @@ bl_info = {
     "name": "Render Border",
     "description": "Render Border",
     "author": "Christian Brinkmann, David Boho",
-    "version": (0, 0, 2),
+    "version": (0, 0, 3),
     "blender": (2, 75, 0),
     "tracker_url": "https://github.com/p2or/blender-renderborder",
     "location": "Camera > Properties > Data > Render Border",
@@ -35,7 +35,7 @@ def round_pixels(pixel_float):
     return round(pixel_float, 2)
 
 def calc_normalized(pixels_int, pixel_max):
-    return pixels_int / pixel_max
+    return pixels_int / pixel_max if pixel_max else 0.0
 
 def calc_pixels(normalized_float, pixel_max):
     return normalized_float * pixel_max
@@ -208,6 +208,17 @@ class InitRenderBorder(bpy.types.Operator):
         rbx.max_y = round_pixels(calc_pixels(scn.render.border_max_y, scn.render.resolution_y))
         return {'FINISHED'}
 
+'''
+class UpdateRenderBorder(bpy.types.Operator):
+    bl_idname = "renderborder.update_renderborder"
+    bl_label = "Update Render Border"
+    bl_description = "Adapt size of viewport values"
+    bl_options = {'INTERNAL'}
+    
+    def execute(self, context):
+        return {'FINISHED'}
+'''
+
 class ResetRenderBorder(bpy.types.Operator):
     bl_idname = "renderborder.reset_renderborder"
     bl_label = "Reset Render Border"
@@ -291,4 +302,4 @@ def unregister():
 
 if __name__ == "__main__":
     register()
-    # bpy.ops.renderborder.init_renderborder()
+    
