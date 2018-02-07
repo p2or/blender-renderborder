@@ -1,6 +1,6 @@
 ### Render Border
 
-A Blender Add-on to adjust the [Render Border](https://blender.org/manual/render/camera/introduction.html#render-border).
+A Blender Add-on to adjust the [Render Border](https://docs.blender.org/manual/en/dev/render/blender_render/camera/introduction.html#render-border).
 
 ![intro](https://fat.gfycat.com/FearlessGiftedGnu.gif)
 
