@@ -20,8 +20,8 @@ bl_info = {
     "name": "Render Border",
     "description": "Render Border",
     "author": "Christian Brinkmann, David Boho",
-    "version": (0, 0, 3),
-    "blender": (2, 75, 0),
+    "version": (0, 0, 4),
+    "blender": (2, 80, 0),
     "tracker_url": "https://github.com/p2or/blender-renderborder",
     "location": "Camera > Properties > Data > Render Border",
     "category": "Render"
@@ -54,7 +54,7 @@ def calc_centerY(res_y, min_y, height):
 
 
 # ------------------------------------------------------------------------
-# Properties
+#   Properties
 # ------------------------------------------------------------------------
 
 class RenderBorder(bpy.types.PropertyGroup):
@@ -134,54 +134,54 @@ class RenderBorder(bpy.types.PropertyGroup):
         return abs(round_pixels(RenderBorder._height))
         
     def get_useBorder(self):
-        bpy.ops.renderborder.init_renderborder()
+        bpy.ops.rborder.init_border()
         return self._rd.use_border
 
-    center_x = bpy.props.IntProperty(
+    center_x : bpy.props.IntProperty(
         name = "Center X",
         description =   ("Horizontal center of the render border box"),
         min = 0, default = 0, get=get_centerX, set=set_centerX )
     
-    center_y = bpy.props.IntProperty(
+    center_y : bpy.props.IntProperty(
         name = "Center Y",
         description =   ("Vertical center of the render border box"),
         min = 0, default = 0, get=get_centerY, set=set_centerY )
 
-    width = bpy.props.IntProperty(
+    width : bpy.props.IntProperty(
         name = "Width",
         description =   ("Width of render border box"),
         min = 0, default = 0, get=get_width)
 
-    height = bpy.props.IntProperty(
+    height : bpy.props.IntProperty(
         name = "Height",
         description =   ("Height of render border box"),
         min = 0, default = 0, get=get_height)
                    
-    min_x = bpy.props.IntProperty(
+    min_x : bpy.props.IntProperty(
         description =   ("Pixel distance between the left edge "
                         "of the camera border and the left "
                         "side of the render border box"),
         name = "Min X", min = 0, default = 0, get=get_minX, set=set_minX )
     
-    max_x = bpy.props.IntProperty(
+    max_x : bpy.props.IntProperty(
         description =   ("Pixel distance between the right edge "
                         "of the camera border and the right "
                         "side of the render border box"),
         name = "Max X",min = 0, default = 0, get=get_maxX, set=set_maxX )
         
-    min_y = bpy.props.IntProperty(
+    min_y : bpy.props.IntProperty(
         description =   ("Pixel distance between the bottom edge "
                         "of the camera border and the bottom "
                         "edge of the render border box"),
         name = "Min Y", min = 0, default = 0, get=get_minY, set=set_minY )
    
-    max_y = bpy.props.IntProperty(
+    max_y : bpy.props.IntProperty(
         description =   ("Pixel distance between the top edge "
                         "of the camera border and the top "
                         "edge of the render border box"),
         name = "Max Y", min = 0, default = 0, get=get_maxY, set=set_maxY )
     
-    use_rborder = bpy.props.BoolProperty(
+    use_rborder : bpy.props.BoolProperty(
         name = "Use render border", description = "Use render border", 
         get=get_useBorder, set=set_useBorder)
 
@@ -190,8 +190,9 @@ class RenderBorder(bpy.types.PropertyGroup):
 # Operators
 # ------------------------------------------------------------------------
 # http://wiki.blender.org/index.php/Extensions:2.6/Py/API_Changes
-class InitRenderBorder(bpy.types.Operator):
-    bl_idname = "renderborder.init_renderborder"
+
+class RBORDER_OT_init_border(bpy.types.Operator):
+    bl_idname = "rborder.init_border"
     bl_label = "Init Render Border"
     bl_options = {'INTERNAL'}
   
@@ -208,19 +209,9 @@ class InitRenderBorder(bpy.types.Operator):
         rbx.max_y = round_pixels(calc_pixels(scn.render.border_max_y, scn.render.resolution_y))
         return {'FINISHED'}
 
-'''
-class UpdateRenderBorder(bpy.types.Operator):
-    bl_idname = "renderborder.update_renderborder"
-    bl_label = "Update Render Border"
-    bl_description = "Adapt size of viewport values"
-    bl_options = {'INTERNAL'}
-    
-    def execute(self, context):
-        return {'FINISHED'}
-'''
 
-class ResetRenderBorder(bpy.types.Operator):
-    bl_idname = "renderborder.reset_renderborder"
+class RBORDER_OT_reset_border(bpy.types.Operator):
+    bl_idname = "rborder.reset_border"
     bl_label = "Reset Render Border"
     bl_description = "Fit render border to the current camera resolution"
     bl_options = {'REGISTER', 'UNDO'}
@@ -236,13 +227,24 @@ class ResetRenderBorder(bpy.types.Operator):
         return {'FINISHED'}
 
 
+'''
+class RBORDER_OT_update(bpy.types.Operator):
+    bl_idname = "rborder.update_border"
+    bl_label = "Update Render Border"
+    bl_description = "Adapt size of viewport values"
+    bl_options = {'INTERNAL'}
+    
+    def execute(self, context):
+        return {'FINISHED'}
+'''
+
 # ------------------------------------------------------------------------
-# Panel
+#   Panel
 # ------------------------------------------------------------------------
 
-class RenderBorderPanel(bpy.types.Panel):
+class RBORDER_PT_camera(bpy.types.Panel):
     bl_label = "Render Border"
-    bl_idname = "DATA_PT_camera.renderborder"
+    bl_idname = "rborder.camera_panel"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "data"
@@ -272,34 +274,48 @@ class RenderBorderPanel(bpy.types.Panel):
         rowsub.prop(rbx, "max_y", text="T")
         col.prop(rbx, "center_x")
         col.prop(rbx, "center_y")
-        col.operator("renderborder.reset_renderborder", text="Reset Render Border")
+        col.operator("rborder.reset_border", text="Reset Render Border", icon='FILE_REFRESH')
         row = layout.row()
         col = layout.column(align=True)
         rowsub = col.row(align=True)
-        rowsub = row.split(align=True, percentage=0.3)
+        rowsub = row.split(factor=0.3, align=True)
         rowsub.prop(scn.render, "use_crop_to_border", text="Crop Image")
         rowsub.alignment = 'RIGHT'
-        rowsub.label('Width: {}px Height: {}px'.format(rbx.width, rbx.height))
+        rowsub.label(text="Width: {}px Height: {}px".format(rbx.width, rbx.height))
 
         
 # ------------------------------------------------------------------------
-# Registration
+#   Registration
 # ------------------------------------------------------------------------
 
 @persistent
 def init_renderborder_member(dummy):
-    bpy.ops.renderborder.init_renderborder()
+    bpy.ops.rborder.init_border()
+
+
+classes = (
+    RenderBorder,
+    RBORDER_OT_init_border,
+    RBORDER_OT_reset_border,
+    RBORDER_PT_camera
+)
 
 def register():
-    bpy.utils.register_module(__name__)
+    from bpy.utils import register_class
+    for cls in classes:
+        register_class(cls)
+    
     bpy.types.Scene.renderborder = bpy.props.PointerProperty(type=RenderBorder)
     bpy.app.handlers.load_post.append(init_renderborder_member)
 
 def unregister():
-    bpy.utils.unregister_module(__name__)
+    from bpy.utils import unregister_class
+    for cls in reversed(classes):
+        unregister_class(cls)
+    
     bpy.app.handlers.load_post.remove(init_renderborder_member)
     del bpy.types.Scene.renderborder
 
+
 if __name__ == "__main__":
     register()
-    
