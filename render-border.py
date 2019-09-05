@@ -20,7 +20,7 @@ bl_info = {
     "name": "Render Border",
     "description": "Render Border",
     "author": "Christian Brinkmann, David Boho",
-    "version": (0, 0, 4),
+    "version": (0, 0, 5),
     "blender": (2, 80, 0),
     "tracker_url": "https://github.com/p2or/blender-renderborder",
     "location": "Camera > Properties > Data > Render Border",
@@ -244,7 +244,7 @@ class RBORDER_OT_update(bpy.types.Operator):
 
 class RBORDER_PT_camera(bpy.types.Panel):
     bl_label = "Render Border"
-    bl_idname = "rborder.camera_panel"
+    #bl_idname = "RBORDER_PT_cameraPanel"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "data"
