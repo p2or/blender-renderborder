@@ -31,6 +31,10 @@ import bpy
 from bpy.app.handlers import persistent
 
 
+# ------------------------------------------------------------------------
+#   Helper
+# ------------------------------------------------------------------------
+
 def round_pixels(pixel_float):
     return round(pixel_float, 2)
 
