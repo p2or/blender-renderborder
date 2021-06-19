@@ -1,12 +1,15 @@
 ### Render Border
 
-A Blender Add-on to adjust the [Render Region](https://docs.blender.org/manual/en/latest/editors/3dview/navigate/regions.html#render-region).
+A Blender Add-on to set the [Render Region](https://docs.blender.org/manual/en/latest/editors/3dview/navigate/regions.html#render-region) precisely.
 
-![intro](https://user-images.githubusercontent.com/512368/122652262-2b537780-d13e-11eb-8a09-2ee2f1eb8635.gif)
+<img width="800" alt="RBORDER" src="https://user-images.githubusercontent.com/512368/122653937-75415b00-d148-11eb-8903-ae9fefa7cd5e.png">
+
 
 #### Usage
 
 The Panel is accessible via *Camera > Properties > Data > Render Border*.
+
+![intro](https://user-images.githubusercontent.com/512368/122652262-2b537780-d13e-11eb-8a09-2ee2f1eb8635.gif)
 
  - **X** - Pixel distance between the left edge of the camera border and the left side of the render border
  - **R** - Pixel distance between the right edge of the camera border and the right side of the render border
