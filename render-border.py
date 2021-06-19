@@ -20,7 +20,7 @@ bl_info = {
     "name": "Render Border",
     "description": "Render Border",
     "author": "Christian Brinkmann, David Boho",
-    "version": (0, 6),
+    "version": (0, 7),
     "blender": (2, 80, 0),
     "tracker_url": "https://github.com/p2or/blender-renderborder",
     "location": "Camera > Properties > Data > Render Border",
@@ -190,7 +190,7 @@ class RBORDER_PG_settings(bpy.types.PropertyGroup):
 #   Operators
 # ------------------------------------------------------------------------
 
-class RBORDER_OT_init_border(bpy.types.Operator):
+class RBORDER_OT_init(bpy.types.Operator):
     bl_idname = "rborder.init_border"
     bl_label = "Init Render Border"
     bl_options = {'INTERNAL'}
@@ -209,7 +209,7 @@ class RBORDER_OT_init_border(bpy.types.Operator):
         return {'FINISHED'}
 
 
-class RBORDER_OT_reset_border(bpy.types.Operator):
+class RBORDER_OT_reset(bpy.types.Operator):
     bl_idname = "rborder.reset_border"
     bl_label = "Reset Render Border"
     bl_description = "Fit render border to the current camera resolution"
@@ -222,7 +222,7 @@ class RBORDER_OT_reset_border(bpy.types.Operator):
         rbx.min_y = 0
         rbx.max_x = scn.render.resolution_x
         rbx.max_y = scn.render.resolution_y
-        self.report({'INFO'}, "Render Border adapted")
+        self.report({'INFO'}, "Render Region adapted")
         return {'FINISHED'}
 
 
@@ -252,27 +252,28 @@ class RBORDER_PT_camera(bpy.types.Panel):
         #context.area.tag_redraw()
         rbx = scn.renderborder
         layout = self.layout
-      
-        row = layout.row()
-        col = row.column(align=True)
-        rowsub = col.row(align=True)
-        rowsub.prop(rbx, "min_x", text="X")
-        rowsub.prop(rbx, "max_x", text="R")
-        rowsub = col.row(align=True)
-        rowsub.prop(rbx, "min_y", text="Y")
-        rowsub.prop(rbx, "max_y", text="T")
-        col.prop(rbx, "center_x")
-        col.prop(rbx, "center_y")
-        col.operator("rborder.reset_border", text="Reset Render Border", icon='FILE_REFRESH')
-        row = layout.row()
-        col = layout.column(align=True)
-        rowsub = col.row(align=True)
-        rowsub = row.split(factor=0.3, align=True)
-        rowsub.prop(scn.render, "use_crop_to_border", text="Crop Image")
-        rowsub.alignment = 'RIGHT'
-        rowsub.label(text="Width: {}px Height: {}px".format(rbx.width, rbx.height))
+        layout.use_property_split = True
 
+        col = layout.column()
+        sub = col.column(align=True)
+        sub.prop(rbx, "min_x", text="X")
+        sub.prop(rbx, "max_x", text="R")
+        sub.prop(rbx, "min_y", text="Y")
+        sub.prop(rbx, "max_y", text="T")
         
+        col = layout.column()
+        sub = col.column(align=True)
+        sub.prop(rbx, "center_x")
+        sub.prop(rbx, "center_y")
+
+        col = layout.column()
+        col.alignment = 'RIGHT'
+        col.label(text="Width: {}px Height: {}px      ".format(rbx.width, rbx.height))
+        col.separator()
+        col = layout.column()
+        col.operator(RBORDER_OT_reset.bl_idname, text="Reset Render Region", icon='FILE_REFRESH')
+        col.separator()
+
 # ------------------------------------------------------------------------
 #   Registration
 # ------------------------------------------------------------------------
@@ -284,8 +285,8 @@ def init_renderborder_member(dummy):
 
 classes = (
     RBORDER_PG_settings,
-    RBORDER_OT_init_border,
-    RBORDER_OT_reset_border,
+    RBORDER_OT_init,
+    RBORDER_OT_reset,
     RBORDER_PT_camera
 )
 
