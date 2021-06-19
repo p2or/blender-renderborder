@@ -20,7 +20,7 @@ bl_info = {
     "name": "Render Border",
     "description": "Render Border",
     "author": "Christian Brinkmann, David Boho",
-    "version": (0, 0, 5),
+    "version": (0, 6),
     "blender": (2, 80, 0),
     "tracker_url": "https://github.com/p2or/blender-renderborder",
     "location": "Camera > Properties > Data > Render Border",
@@ -57,7 +57,7 @@ def calc_centerY(res_y, min_y, height):
 #   Properties
 # ------------------------------------------------------------------------
 
-class RenderBorder(bpy.types.PropertyGroup):
+class RBORDER_PG_settings(bpy.types.PropertyGroup):
     
     # static member
     _rd = None
@@ -68,70 +68,70 @@ class RenderBorder(bpy.types.PropertyGroup):
         diffX = calc_normalized((value - self._centerX), self._resX)
         self._rd.border_min_x += diffX
         self._rd.border_max_x += diffX
-        RenderBorder._minX = calc_pixels(self._rd.border_min_x, self._resX)
-        RenderBorder._maxX = calc_pixels(self._rd.border_max_x, self._resX)
-        RenderBorder._width = calc_width(self._resX, self._rd.border_min_x, self._rd.border_max_x)
-        RenderBorder._centerX = value
+        RBORDER_PG_settings._minX = calc_pixels(self._rd.border_min_x, self._resX)
+        RBORDER_PG_settings._maxX = calc_pixels(self._rd.border_max_x, self._resX)
+        RBORDER_PG_settings._width = calc_width(self._resX, self._rd.border_min_x, self._rd.border_max_x)
+        RBORDER_PG_settings._centerX = value
     
     def set_centerY(self, value):
         diffY = calc_normalized((value - self._centerY), self._resY)
         self._rd.border_min_y += diffY
         self._rd.border_max_y += diffY
-        RenderBorder._minY = calc_pixels(self._rd.border_min_y, self._resY)
-        RenderBorder._maxY = calc_pixels(self._rd.border_max_y, self._resY)
-        RenderBorder._height = calc_height(self._resY, self._rd.border_min_y, self._rd.border_max_y)
-        RenderBorder._centerY = value
+        RBORDER_PG_settings._minY = calc_pixels(self._rd.border_min_y, self._resY)
+        RBORDER_PG_settings._maxY = calc_pixels(self._rd.border_max_y, self._resY)
+        RBORDER_PG_settings._height = calc_height(self._resY, self._rd.border_min_y, self._rd.border_max_y)
+        RBORDER_PG_settings._centerY = value
     
     def set_minX(self, value):
         self._rd.border_min_x = calc_normalized(value, self._resX)
-        RenderBorder._minX = round_pixels(calc_pixels(self._rd.border_min_x, self._resX))
-        RenderBorder._width = calc_width(self._resX, self._rd.border_min_x, self._rd.border_max_x)
-        RenderBorder._centerX = calc_centerX(self._resX, self._rd.border_min_x, self._width)
+        RBORDER_PG_settings._minX = round_pixels(calc_pixels(self._rd.border_min_x, self._resX))
+        RBORDER_PG_settings._width = calc_width(self._resX, self._rd.border_min_x, self._rd.border_max_x)
+        RBORDER_PG_settings._centerX = calc_centerX(self._resX, self._rd.border_min_x, self._width)
     
     def set_maxX(self, value):
         self._rd.border_max_x = calc_normalized(value, self._resX)
-        RenderBorder._maxX = round_pixels(calc_pixels(self._rd.border_max_x, self._resX))
-        RenderBorder._width = calc_width(self._resX, self._rd.border_min_x, self._rd.border_max_x)
-        RenderBorder._centerX = calc_centerX(self._resX, self._rd.border_min_x, self._width)
+        RBORDER_PG_settings._maxX = round_pixels(calc_pixels(self._rd.border_max_x, self._resX))
+        RBORDER_PG_settings._width = calc_width(self._resX, self._rd.border_min_x, self._rd.border_max_x)
+        RBORDER_PG_settings._centerX = calc_centerX(self._resX, self._rd.border_min_x, self._width)
 
     def set_minY(self, value):
         self._rd.border_min_y = calc_normalized(value, self._resY)
-        RenderBorder._minY = round_pixels(calc_pixels(self._rd.border_min_y, self._resY))
-        RenderBorder._height = calc_height(self._resY, self._rd.border_min_y, self._rd.border_max_y)
-        RenderBorder._centerY = calc_centerY(self._resY, self._rd.border_min_y, self._height)
+        RBORDER_PG_settings._minY = round_pixels(calc_pixels(self._rd.border_min_y, self._resY))
+        RBORDER_PG_settings._height = calc_height(self._resY, self._rd.border_min_y, self._rd.border_max_y)
+        RBORDER_PG_settings._centerY = calc_centerY(self._resY, self._rd.border_min_y, self._height)
         
     def set_maxY(self, value):
         self._rd.border_max_y = calc_normalized(value, self._resY)
-        RenderBorder._maxY = round_pixels(calc_pixels(self._rd.border_max_y, self._resY))
-        RenderBorder._height = calc_height(self._resY, self._rd.border_min_y, self._rd.border_max_y)
-        RenderBorder._centerY = calc_centerY(self._resY, self._rd.border_min_y, self._height)
+        RBORDER_PG_settings._maxY = round_pixels(calc_pixels(self._rd.border_max_y, self._resY))
+        RBORDER_PG_settings._height = calc_height(self._resY, self._rd.border_min_y, self._rd.border_max_y)
+        RBORDER_PG_settings._centerY = calc_centerY(self._resY, self._rd.border_min_y, self._height)
     
     def set_useBorder(self, value):
         self._rd.use_border = value
            
     def get_centerX(self):
-        return RenderBorder._centerX
+        return RBORDER_PG_settings._centerX
     
     def get_centerY(self):
-        return RenderBorder._centerY
+        return RBORDER_PG_settings._centerY
         
     def get_minX(self):
-        return RenderBorder._minX
+        return RBORDER_PG_settings._minX
     
     def get_maxX(self):
-        return RenderBorder._maxX
+        return RBORDER_PG_settings._maxX
     
     def get_minY(self):
-        return RenderBorder._minY
+        return RBORDER_PG_settings._minY
     
     def get_maxY(self):
-        return RenderBorder._maxY
+        return RBORDER_PG_settings._maxY
 
     def get_width(self):
-        return abs(round_pixels(RenderBorder._width))
+        return abs(round_pixels(RBORDER_PG_settings._width))
     
     def get_height(self):
-        return abs(round_pixels(RenderBorder._height))
+        return abs(round_pixels(RBORDER_PG_settings._height))
         
     def get_useBorder(self):
         bpy.ops.rborder.init_border()
@@ -187,9 +187,8 @@ class RenderBorder(bpy.types.PropertyGroup):
 
 
 # ------------------------------------------------------------------------
-# Operators
+#   Operators
 # ------------------------------------------------------------------------
-# http://wiki.blender.org/index.php/Extensions:2.6/Py/API_Changes
 
 class RBORDER_OT_init_border(bpy.types.Operator):
     bl_idname = "rborder.init_border"
@@ -198,9 +197,9 @@ class RBORDER_OT_init_border(bpy.types.Operator):
   
     def execute(self, context):
         scn = context.scene
-        RenderBorder._rd = scn.render
-        RenderBorder._resX = scn.render.resolution_x
-        RenderBorder._resY = scn.render.resolution_y
+        RBORDER_PG_settings._rd = scn.render
+        RBORDER_PG_settings._resX = scn.render.resolution_x
+        RBORDER_PG_settings._resY = scn.render.resolution_y
         
         rbx = scn.renderborder
         rbx.min_x = round_pixels(calc_pixels(scn.render.border_min_x, scn.render.resolution_x))
@@ -226,17 +225,6 @@ class RBORDER_OT_reset_border(bpy.types.Operator):
         self.report({'INFO'}, "Render Border adapted")
         return {'FINISHED'}
 
-
-'''
-class RBORDER_OT_update(bpy.types.Operator):
-    bl_idname = "rborder.update_border"
-    bl_label = "Update Render Border"
-    bl_description = "Adapt size of viewport values"
-    bl_options = {'INTERNAL'}
-    
-    def execute(self, context):
-        return {'FINISHED'}
-'''
 
 # ------------------------------------------------------------------------
 #   Panel
@@ -295,7 +283,7 @@ def init_renderborder_member(dummy):
 
 
 classes = (
-    RenderBorder,
+    RBORDER_PG_settings,
     RBORDER_OT_init_border,
     RBORDER_OT_reset_border,
     RBORDER_PT_camera
@@ -306,7 +294,7 @@ def register():
     for cls in classes:
         register_class(cls)
     
-    bpy.types.Scene.renderborder = bpy.props.PointerProperty(type=RenderBorder)
+    bpy.types.Scene.renderborder = bpy.props.PointerProperty(type=RBORDER_PG_settings)
     bpy.app.handlers.load_post.append(init_renderborder_member)
 
 def unregister():
