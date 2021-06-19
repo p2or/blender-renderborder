@@ -2,7 +2,7 @@
 
 A Blender Add-on to adjust the [Render Border](https://docs.blender.org/manual/en/dev/render/blender_render/camera/introduction.html#render-border).
 
-![intro](https://fat.gfycat.com/FearlessGiftedGnu.gif)
+![intro](https://user-images.githubusercontent.com/512368/122652262-2b537780-d13e-11eb-8a09-2ee2f1eb8635.gif)
 
 
 #### Usage
