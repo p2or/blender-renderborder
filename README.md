@@ -1,9 +1,8 @@
 ### Render Border
 
-A Blender Add-on to adjust the [Render Border](https://docs.blender.org/manual/en/dev/render/blender_render/camera/introduction.html#render-border).
+A Blender Add-on to adjust the [Render Region](https://docs.blender.org/manual/en/latest/editors/3dview/navigate/regions.html#render-region).
 
 ![intro](https://user-images.githubusercontent.com/512368/122652262-2b537780-d13e-11eb-8a09-2ee2f1eb8635.gif)
-
 
 #### Usage
 
@@ -16,16 +15,20 @@ The Panel is accessible via *Camera > Properties > Data > Render Border*.
  - **Center X** - Horizontal center of the render border
  - **Center Y** - Vertical center of the render border
 
-You can also animate/keyframe the values as usual. In order to **render an animation** you can either use [Loom](https://github.com/p2or/blender-loom) or write your own python script to render single frames of the animation (Blender updates some of the render attributes *only once per render execution* due to a [current limitation](https://developer.blender.org/T47530) so unfortunately you cannot use [default animation rendering](https://docs.blender.org/manual/en/dev/render/output/render_panel.html)).
- 
-![Animation](https://i.stack.imgur.com/tCoxp.gif)
-
-
-
 #### Installation
 
  1. Download the [latest release](https://github.com/p2or/blender-renderborder/releases)
  2. In Blender open up *User Preferences > Addons*
  3. Click *Install from File*, select `render-border.py` and activate the Add-on
+
+#### Gotchas
+
+You can animate/keyframe the values as usual. However, in order to **render an animation** you would have to use [Loom](https://github.com/p2or/blender-loom) or write your own python script to render single frames of the animation since Blender updates some of the render attributes *only once per render execution* due to a [current limitation](https://developer.blender.org/T47530) so unfortunately you cannot use [default animation rendering](https://docs.blender.org/manual/en/dev/render/output/render_panel.html)).
+ 
+![Animation](https://i.stack.imgur.com/tCoxp.gif)
+
+
+
+
 
 
