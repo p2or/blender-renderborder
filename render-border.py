@@ -21,7 +21,8 @@ bl_info = {
     "description": "Render Border",
     "author": "Christian Brinkmann (p2or), David Boho",
     "version": (0, 8),
-    "blender": (2, 80, 0),
+    "blender": (2, 83, 0),
+    "doc_url": "https://github.com/p2or/blender-renderborder",
     "tracker_url": "https://github.com/p2or/blender-renderborder",
     "location": "Camera > Properties > Data > Render Border",
     "category": "Render"
