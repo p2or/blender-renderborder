@@ -19,8 +19,8 @@
 bl_info = {
     "name": "Render Border",
     "description": "Render Border",
-    "author": "Christian Brinkmann, David Boho",
-    "version": (0, 7),
+    "author": "Christian Brinkmann (p2or), David Boho",
+    "version": (0, 8),
     "blender": (2, 80, 0),
     "tracker_url": "https://github.com/p2or/blender-renderborder",
     "location": "Camera > Properties > Data > Render Border",
@@ -36,7 +36,7 @@ from bpy.app.handlers import persistent
 # ------------------------------------------------------------------------
 
 def round_pixels(pixel_float):
-    return round(pixel_float, 2)
+    return round(pixel_float)
 
 def calc_normalized(pixels_int, pixel_max):
     return pixels_int / pixel_max if pixel_max else 0.0
@@ -51,10 +51,10 @@ def calc_height(res_y, min_y, max_y):
     return res_y * max_y - res_y * min_y  
 
 def calc_centerX(res_x, min_x, width):
-    return res_x * min_x + width / 2
+    return round(res_x * min_x + width / 2)
 
 def calc_centerY(res_y, min_y, height):
-    return res_y * min_y + height / 2
+    return round(res_y * min_y + height / 2)
 
 
 # ------------------------------------------------------------------------
@@ -141,51 +141,51 @@ class RBORDER_PG_settings(bpy.types.PropertyGroup):
         bpy.ops.rborder.init_border()
         return self._rd.use_border
 
-    center_x : bpy.props.IntProperty(
+    center_x: bpy.props.IntProperty(
         name = "Center X",
         description =   ("Horizontal center of the render border box"),
         min = 0, default = 0, get=get_centerX, set=set_centerX )
     
-    center_y : bpy.props.IntProperty(
+    center_y: bpy.props.IntProperty(
         name = "Center Y",
         description =   ("Vertical center of the render border box"),
         min = 0, default = 0, get=get_centerY, set=set_centerY )
 
-    width : bpy.props.IntProperty(
+    width: bpy.props.IntProperty(
         name = "Width",
         description =   ("Width of render border box"),
         min = 0, default = 0, get=get_width)
 
-    height : bpy.props.IntProperty(
+    height: bpy.props.IntProperty(
         name = "Height",
         description =   ("Height of render border box"),
         min = 0, default = 0, get=get_height)
                    
-    min_x : bpy.props.IntProperty(
+    min_x: bpy.props.IntProperty(
         description =   ("Pixel distance between the left edge "
                         "of the camera border and the left "
                         "side of the render border box"),
         name = "Min X", min = 0, default = 0, get=get_minX, set=set_minX )
     
-    max_x : bpy.props.IntProperty(
+    max_x: bpy.props.IntProperty(
         description =   ("Pixel distance between the right edge "
                         "of the camera border and the right "
                         "side of the render border box"),
         name = "Max X",min = 0, default = 0, get=get_maxX, set=set_maxX )
         
-    min_y : bpy.props.IntProperty(
+    min_y: bpy.props.IntProperty(
         description =   ("Pixel distance between the bottom edge "
                         "of the camera border and the bottom "
                         "edge of the render border box"),
         name = "Min Y", min = 0, default = 0, get=get_minY, set=set_minY )
    
-    max_y : bpy.props.IntProperty(
+    max_y: bpy.props.IntProperty(
         description =   ("Pixel distance between the top edge "
                         "of the camera border and the top "
                         "edge of the render border box"),
         name = "Max Y", min = 0, default = 0, get=get_maxY, set=set_maxY )
     
-    use_rborder : bpy.props.BoolProperty(
+    use_rborder: bpy.props.BoolProperty(
         name = "Use render border", description = "Use render border", 
         get=get_useBorder, set=set_useBorder)
 
@@ -253,7 +253,7 @@ class RBORDER_PT_camera(bpy.types.Panel):
     
     def draw(self, context):
         scn = context.scene
-        #context.area.tag_redraw()
+        context.area.tag_redraw()
         rbx = scn.renderborder
         layout = self.layout
         layout.use_property_split = True
