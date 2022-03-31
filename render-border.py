@@ -236,26 +236,27 @@ class RBORDER_OT_reset(bpy.types.Operator):
 # ------------------------------------------------------------------------
 
 class RBORDER_PT_camera(bpy.types.Panel):
-    bl_label = "Render Border"
+    bl_label = "Render Region"
     #bl_idname = "RBORDER_PT_cameraPanel"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "output" #data
     bl_options = {'DEFAULT_CLOSED'}
+    bl_parent_id = "RENDER_PT_format"
+    
+    '''
+    def draw_header(self, context):
+        self.layout.prop(context.scene.renderborder, "use_rborder", text="")
+    '''
     
     @classmethod
     def poll(cls, context):
-        return context.active_object.type == "CAMERA"
-    
-    def draw_header(self, context):
-        scn = context.scene
-        rbx = scn.renderborder
-        self.layout.prop(rbx, "use_rborder", text="")
+        #context.scene.render.use_border
+        return context.scene.renderborder.use_rborder
     
     def draw(self, context):
-        scn = context.scene
-        context.area.tag_redraw()
-        rbx = scn.renderborder
+        #context.area.tag_redraw()
+        rbx = context.scene.renderborder
         layout = self.layout
         layout.use_property_split = True
 
