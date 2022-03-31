@@ -240,7 +240,7 @@ class RBORDER_PT_camera(bpy.types.Panel):
     #bl_idname = "RBORDER_PT_cameraPanel"
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
-    bl_context = "data"
+    bl_context = "output" #data
     bl_options = {'DEFAULT_CLOSED'}
     
     @classmethod
